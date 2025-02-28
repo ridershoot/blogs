@@ -1,22 +1,30 @@
 {
-  "name": "blogs",
-  "version": "0.0.1",
-  "description": "Programmer Li's blog site, about front-end development, web performance, and so on.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "type": "module",
-  "devDependencies": {
-    "vitepress": "^1.6.3"
-  },
-  "dependencies": {
-    "vue": "^3.5.13"
-  }
+	"name": "blogs",
+	"version": "0.0.1",
+	"description": "程序员 李 的博客，一起畅游前端世界吧",
+	"homepage": "https://ridershoot.github.io/blogs/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ridershoot/blogs"
+	},
+	"main": "",
+	"scripts": {
+		"docs:dev": "vitepress dev",
+		"docs:build": "vitepress build",
+		"docs:preview": "vitepress preview"
+	},
+	"keywords": [],
+	"author": {
+		"name": "ridershoot",
+		"email": "1903655014lxf@gmail.com",
+		"url": "https://github.com/ridershoot/blogs"
+	},
+	"license": "MIT",
+	"type": "module",
+	"devDependencies": {
+		"vitepress": "^1.6.3"
+	},
+	"dependencies": {
+		"vue": "^3.5.13"
+	}
 }

@@ -2,10 +2,12 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-	title: "Programmer Li's Blog",
+	// 指定部署路径为 /blogs/
 	base: "/blogs/",
-	description:
-		"Programmer Li's blog site, about front-end development, web performance, and so on.",
+	// 指定页面目录为 pages 目录
+	srcDir: "./pages",
+	title: "程序员 李 的博客",
+	description: "一起在程序员 李 的博客站点获取前端知识吧",
 	themeConfig: {
 		// https://vitepress.dev/reference/default-theme-config
 		nav: [

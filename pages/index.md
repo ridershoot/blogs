@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "Programmer Li's Blog"
-  text: "Programmer Li's blog site, about front-end development, web performance, and so on."
+  name: "程序员 李 的博客"
+  text: "一起畅游我的世界吧"
   tagline: My great project tagline
   actions:
     - theme: brand
@@ -22,4 +22,3 @@ features:
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
-
