@@ -23,6 +23,6 @@ export default defineConfig({
 			},
 		],
 
-		socialLinks: [{ icon: "github", link: "https://ridershoot.github.io/blogs" }],
+		socialLinks: [{ icon: "github", link: "https://github.com/ridershoot/blogs" }],
 	},
 });
