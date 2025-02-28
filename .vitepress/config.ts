@@ -8,13 +8,25 @@ export default defineConfig({
 	srcDir: "./pages",
 	title: "程序员 李 的博客",
 	description: "一起在程序员 李 的博客站点获取前端知识吧",
+	lang: "zh-CN",
+	markdown: {
+		// 为每个代码块添加行号
+		lineNumbers: true,
+		image: {
+			// 懒加载图片
+			lazyLoading: true,
+		},
+	},
 	themeConfig: {
 		// https://vitepress.dev/reference/default-theme-config
+		// 社交链接
+		socialLinks: [{ icon: "github", link: "https://github.com/ridershoot/blogs" }],
+		// 顶部导航
 		nav: [
 			{ text: "Home", link: "/" },
-			{ text: "Examples", link: "/markdown-examples" },
+			// { text: "Examples", link: "/markdown-examples" },
 		],
-
+		// 侧边栏
 		sidebar: [
 			{
 				text: "Examples",
@@ -24,7 +36,5 @@ export default defineConfig({
 				],
 			},
 		],
-
-		socialLinks: [{ icon: "github", link: "https://github.com/ridershoot/blogs" }],
 	},
 });
