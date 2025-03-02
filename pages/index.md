@@ -13,9 +13,9 @@ hero:
   #   - theme: alt
   #     text: API Examples
   #     link: /api-examples
-# features:
-#   - title: Feature A
-#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+features:
+  - title: UniApp
+    details: 使用 UniApp 构建多端代码，各类小程序、iOS、Android、HarmonyOS
 #   - title: Feature B
 #     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 #   - title: Feature C
