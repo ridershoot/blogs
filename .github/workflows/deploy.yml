@@ -6,9 +6,10 @@ on:
   # 在针对 `main` 分支的推送上运行。如果你
   # 使用 `master` 分支作为默认分支，请将其更改为 `master`
   push:
-    # branches: [master]
+    branches: [master]
     # 仅在 npm 的版本更新时运行
-    tags: ["v*"] # 匹配所有 v 开头的标签
+    # 下面 deploy 有配置 environment，git 仓库有配置只允许 master 分支更新时才能执行部署，如果要使用 tags 触发部署，需要修改 git 仓库的配置，可以去到settings->environments->github-pages->Deployment branches and tags
+    # tags: ["v*"] # 匹配所有 v 开头的标签
 
   # 允许你从 Actions 选项卡手动运行此工作流程
   workflow_dispatch:

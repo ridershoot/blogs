@@ -14,10 +14,7 @@
 	"scripts": {
 		"docs:dev": "vitepress dev",
 		"docs:build": "vitepress build",
-		"docs:preview": "vitepress preview",
-		"version:patch": "npm version patch && git push & git push --tags",
-		"version:minor": "npm version minor && git push & git push --tags",
-		"version:major": "npm version major && git push & git push --tags"
+		"docs:preview": "vitepress preview"
 	},
 	"keywords": [],
 	"author": {
