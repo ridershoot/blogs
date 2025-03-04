@@ -4,8 +4,8 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
 	// 指定部署路径为 /blogs/
 	base: "/blogs/",
-	// 指定页面目录为 pages 目录
-	srcDir: "./pages",
+	// 指定页面目录为 src 目录
+	srcDir: "./src",
 	title: "程序员 李 的博客",
 	description: "一起在程序员 李 的博客站点获取前端知识吧",
 	lang: "zh-CN",

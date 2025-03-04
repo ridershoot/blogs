@@ -21,6 +21,10 @@
 
 ### 手机号登录
 
+![触发登录](../../image/WechatIMG643.jpg)
+
+<!-- ![手机号登录](/assets/image/WechatIMG644.jpg) -->
+
 微信上的手机号一键登录
 
 ### 微信 token 登录
