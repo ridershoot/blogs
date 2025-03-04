@@ -1,6 +1,9 @@
 {
 	"name": "blogs",
 	"version": "0.0.1",
+	"engines": {
+		"node": ">=18.20.4"
+	},
 	"description": "程序员 李 的博客，一起畅游前端世界吧",
 	"homepage": "https://ridershoot.github.io/blogs/",
 	"repository": {
