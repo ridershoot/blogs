@@ -9,7 +9,7 @@ on:
     # branches: [master]
     # 仅在 npm 的版本更新时运行
     tags:
-      - v*
+      - "v*" # 匹配所有 v 开头的标签
 
   # 允许你从 Actions 选项卡手动运行此工作流程
   workflow_dispatch:
