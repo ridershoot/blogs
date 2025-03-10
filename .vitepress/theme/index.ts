@@ -4,7 +4,8 @@ import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import "./style.css";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
-import { Fancybox } from "@fancyapps/ui";
+import Fancyapps from "@fancyapps/ui/dist/fancybox/fancybox.umd.js";
+Fancyapps.Fancybox.bind("[data-fancybox]");
 
 export default {
 	extends: DefaultTheme,
@@ -13,12 +14,5 @@ export default {
 			// https://vitepress.dev/guide/extending-default-theme#layout-slots
 		});
 	},
-	enhanceApp({ app, router, siteData }) {
-		router.onBeforeRouteChange = () => {
-			Fancybox.unbind("[data-fancybox]");
-		};
-		router.onAfterRouteChange = () => {
-			Fancybox.bind("[data-fancybox]");
-		};
-	},
+	enhanceApp({ app, router, siteData }) {},
 } satisfies Theme;
