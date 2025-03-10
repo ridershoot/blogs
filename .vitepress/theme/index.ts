@@ -4,7 +4,8 @@ import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import "./style.css";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
-import Fancyapps from "@fancyapps/ui/dist/fancybox/fancybox.umd.js";
+// @ts-ignore
+import Fancyapps from "@fancyapps/ui/fancybox";
 Fancyapps.Fancybox.bind("[data-fancybox]");
 
 export default {

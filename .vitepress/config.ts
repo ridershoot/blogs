@@ -67,4 +67,11 @@ export default defineConfig({
 			copyright: `Copyright © 2024-${currentYear} <a href='https://github.com/ridershoot'>ridershoot</a>`,
 		},
 	},
+	vite: {
+		resolve: {
+			alias: {
+				"@fancyapps/ui/fancybox": "@fancyapps/ui/dist/index.umd.js",
+			},
+		},
+	},
 });
