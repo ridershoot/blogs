@@ -1,24 +1,17 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from "vue";
-import type { Theme } from "vitepress";
-import DefaultTheme from "vitepress/theme";
-import "./style.css";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
-import { Fancybox } from "@fancyapps/ui";
+import { h } from 'vue'
+import type { Theme } from 'vitepress'
+import DefaultTheme from 'vitepress/theme'
+import './style.css'
 
 export default {
-	extends: DefaultTheme,
-	Layout: () => {
-		return h(DefaultTheme.Layout, null, {
-			// https://vitepress.dev/guide/extending-default-theme#layout-slots
-		});
-	},
-	enhanceApp({ app, router, siteData }) {
-		router.onBeforeRouteChange = () => {
-			Fancybox.unbind("[data-fancybox]");
-		};
-		router.onAfterRouteChange = () => {
-			Fancybox.bind("[data-fancybox]");
-		};
-	},
-} satisfies Theme;
+  extends: DefaultTheme,
+  Layout: () => {
+    return h(DefaultTheme.Layout, null, {
+      // https://vitepress.dev/guide/extending-default-theme#layout-slots
+    })
+  },
+  enhanceApp({ app, router, siteData }) {
+    // ...
+  }
+} satisfies Theme

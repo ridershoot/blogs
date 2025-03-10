@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@fancyapps/ui':
-        specifier: ^5.0.36
-        version: 5.0.36
       vue:
         specifier: ^3.5.13
         version: 3.5.13
@@ -270,9 +267,6 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
-
-  '@fancyapps/ui@5.0.36':
-    resolution: {integrity: sha512-GMygQzp1MBTFNTT6AzpbL6pXTD6bTxwjmmpI1fe8Ozmmiseu8/g82Sudl1YhcbZmS4bJgaBOF5THDFGpXQ1fDw==}
 
   '@iconify-json/simple-icons@1.2.26':
     resolution: {integrity: sha512-NvqRuE+5h/tp4boPlnvfs0alD0CvnRE7oeG9Li5NGmZRx2/rhwlNjW/vEVTyhZcR9zqvRPAVh2GXR+PTEpzV+A==}
@@ -994,8 +988,6 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
-
-  '@fancyapps/ui@5.0.36': {}
 
   '@iconify-json/simple-icons@1.2.26':
     dependencies:
