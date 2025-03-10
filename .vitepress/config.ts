@@ -1,6 +1,8 @@
 import { defineConfig } from "vitepress";
-
+import ImgWithFancyboxPlugin from "./plugins/ImgWithFancybox";
 // https://vitepress.dev/reference/site-config
+
+const currentYear = new Date().getFullYear();
 export default defineConfig({
 	// 指定部署路径为 /blogs/
 	base: "/blogs/",
@@ -15,6 +17,10 @@ export default defineConfig({
 		image: {
 			// 懒加载图片
 			lazyLoading: true,
+		},
+		config(md) {
+			// 大图预览
+			md.use(ImgWithFancyboxPlugin);
 		},
 	},
 	// 是否显示最后更新时间
@@ -58,7 +64,7 @@ export default defineConfig({
 		footer: {
 			message:
 				"基于 <a href='https://github.com/vuejs/vitepress/blob/main/LICENSE'>MIT</a> 许可发布",
-			copyright: "Copyright © 2024-2025 <a href='https://github.com/ridershoot'>ridershoot</a>",
+			copyright: `Copyright © 2024-${currentYear} <a href='https://github.com/ridershoot'>ridershoot</a>`,
 		},
 	},
 });
