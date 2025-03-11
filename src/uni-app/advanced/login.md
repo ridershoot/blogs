@@ -23,7 +23,11 @@
 
 ::: warning 注意
 
-手机号的获取需要通过内置组件`button`的`open-type`来获取，这个需要花钱，详情看[官方文档](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/getPhoneNumber.html)
+- 手机号的获取需要通过内置组件`button`的`open-type`
+- 获取手机号要花钱，详情看[官方文档](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/getPhoneNumber.html)
+- 只能由非个人开发者，且完成了认证的小程序开放
+  - 主体类型大致分为*个体工商户*、*企业*、*媒体*、*政府及事业单位*、*其他组织*
+  - 认证要去微信公众平台，详情可以看[这里](https://developers.weixin.qq.com/miniprogram/product/renzheng.html)
 
 :::
 

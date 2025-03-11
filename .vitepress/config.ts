@@ -1,9 +1,11 @@
 import { defineConfig } from "vitepress";
+import type { UserConfig, DefaultTheme } from "vitepress";
 import ImgWithFancyboxPlugin from "./plugins/ImgWithFancybox";
 // https://vitepress.dev/reference/site-config
 
 const currentYear = new Date().getFullYear();
-export default defineConfig({
+
+const config: UserConfig<DefaultTheme.Config> = {
 	// 指定部署路径为 /blogs/
 	base: "/blogs/",
 	// 指定页面目录为 src 目录
@@ -33,7 +35,7 @@ export default defineConfig({
 		// 顶部导航
 		nav: [
 			{ text: "首页", link: "/" },
-			{ text: "uni-app", link: "/uni-app/advanced/login" },
+			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
 		],
 		// 搜索
 		search: {
@@ -42,6 +44,15 @@ export default defineConfig({
 		// 侧边栏
 		sidebar: {
 			"uni-app": [
+				{
+					text: "基础",
+					items: [
+						{
+							text: "分包和预加载",
+							link: "/uni-app/base/subpackage&preload",
+						},
+					],
+				},
 				{
 					text: "进阶",
 					collapsed: true,
@@ -74,4 +85,6 @@ export default defineConfig({
 			},
 		},
 	},
-});
+};
+
+export default defineConfig(config);
