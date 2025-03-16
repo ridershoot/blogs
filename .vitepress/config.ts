@@ -68,7 +68,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 		// 文章大纲
 		outline: {
 			// 深度，默认深度为 2 级标题
-			level: 2,
+			level: "deep",
 			// 显示在 outline 上的标题
 			label: "页面导航",
 		},
