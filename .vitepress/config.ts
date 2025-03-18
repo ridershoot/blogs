@@ -16,6 +16,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 	markdown: {
 		// 为每个代码块添加行号
 		lineNumbers: true,
+		// theme: "one-dark-pro",
 		image: {
 			// 懒加载图片
 			lazyLoading: true,
@@ -33,16 +34,25 @@ const config: UserConfig<DefaultTheme.Config> = {
 		// 社交链接
 		socialLinks: [{ icon: "github", link: "https://github.com/ridershoot/blogs" }],
 		// 顶部导航
-		nav: [
-			{ text: "首页", link: "/" },
-			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
-		],
+		nav: [{ text: "首页", link: "/" }],
 		// 搜索
 		search: {
 			provider: "local",
 		},
 		// 侧边栏
 		sidebar: {
+			vue: [
+				{
+					text: "注意",
+					collapsed: true,
+					items: [
+						{
+							text: "vue3 响应式数据重置",
+							link: "/vue/note/vue3-reactive-data-reset",
+						},
+					],
+				},
+			],
 			"uni-app": [
 				{
 					text: "基础",
@@ -86,5 +96,23 @@ const config: UserConfig<DefaultTheme.Config> = {
 		},
 	},
 };
+
+// 生成侧边栏导航
+const additionalNavConfig: DefaultTheme.NavItem[] = [];
+const sidebarConfig = config.themeConfig!.sidebar;
+for (const key in sidebarConfig) {
+	const sidebarItem = sidebarConfig[key];
+	const text = key;
+	const firstItem = sidebarItem[0];
+	const config = { link: "" };
+	if (firstItem.items) {
+		config.link = firstItem.items[0].link;
+	} else {
+		config.link = firstItem.link;
+	}
+	additionalNavConfig.push({ text, link: config.link });
+}
+
+config.themeConfig!.nav!.push(...additionalNavConfig);
 
 export default defineConfig(config);
