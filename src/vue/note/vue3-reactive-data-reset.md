@@ -6,9 +6,9 @@
 
 :::
 
-在开发中总是会面临需要重置数据的场景，比如填写完表格之后需要重置表格，而 vue 通过数据驱动视图，重置表格即视为重置数据。
+在开发中总是会面临需要重置数据的场景，比如提交表格之后需要重置表格，而 vue 是通过数据驱动视图，重置表格即视为重置数据。
 
-重置数据很简单，如果需要*重置的数据比较少*，你可以像这样**一个一个手动重置**：
+重置数据很简单，如果需要重置的数据*比较少*，你可以像这样**一个一个手动重置**：
 
 ```ts{1-5,10-12}
 const form = ref({
@@ -141,7 +141,40 @@ const register = async () => {
 
 :::danger
 
-获取原始数据必须通过方法，而不是
+**获取原始数据必须通过方法，而不是直接访问原始数据对象。**
+
+上面这句话是结论，但是为什么只能通过方法获取原始对象，而不是直接访问原始对象是重点。
+
+先看看直接访问原始数据对象的代码：
+
+```ts{8,12}
+const originForm = {
+  username: "",
+  password: "",
+  password2: "",
+  isMarried: false,
+  age: 0
+}
+const form = ref(originForm);
+
+const resetForm = () => {
+  console.log("resetForm 方法执行");
+  form.value = originForm;
+}
+
+const register = async () => {
+  const res = await apiPostRegister(form.value);
+  // 提示...
+  resetForm();
+  // 跳转...
+}
+```
+
+将上面的代码执行一下你会发现 `resetForm` 看起来没有效果，但实际上打开浏览器控制台，你又会看到*resetForm 方法执行*有被输出，那这到底是为什么呢？
+
+要排查这个问题，你可以用 `watch` 监听 `form` ，也可以直接在 `resetForm` 里面输出 `form.value` 和 `originForm` 进行对比，但是无论哪种方法最后都会指向一个结论： `form` 没有被改变。 `watch` 监听不到由 `resetForm` 触发的改变， `form.value` 和 `originForm` 的值相等，也没有触发改变。
+
+通过对比 `form.value` 和 `originForm` 其实已经可以看出问题所在了，**`originForm`**被修改了，但从代码上看，没有显式
 
 :::
 
