@@ -16,7 +16,6 @@ const config: UserConfig<DefaultTheme.Config> = {
 	markdown: {
 		// 为每个代码块添加行号
 		lineNumbers: true,
-		theme: "one-dark-pro",
 		image: {
 			// 懒加载图片
 			lazyLoading: true,
