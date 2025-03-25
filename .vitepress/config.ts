@@ -33,44 +33,58 @@ const config: UserConfig<DefaultTheme.Config> = {
 		// 社交链接
 		socialLinks: [{ icon: "github", link: "https://github.com/ridershoot/blogs" }],
 		// 顶部导航
-		nav: [{ text: "首页", link: "/" }],
+		nav: [
+			{ text: "首页", link: "/" },
+			{ text: "vue", link: "/vue/note/vue3-reactive-data-reset" },
+			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
+			{ text: "工具", link: "/tools/" },
+		],
 		// 搜索
 		search: {
 			provider: "local",
 		},
 		// 侧边栏
 		sidebar: {
-			vue: [
+			"/vue/": [
 				{
 					text: "注意",
 					collapsed: true,
+					base: "/vue/note/",
 					items: [
 						{
 							text: "vue3 响应式数据重置",
-							link: "/vue/note/vue3-reactive-data-reset",
+							link: "vue3-reactive-data-reset",
 						},
 					],
 				},
 			],
-			"uni-app": [
+			"/uni-app/": [
 				{
 					text: "基础",
+					base: "/uni-app/base/",
 					items: [
 						{
 							text: "分包和预加载",
-							link: "/uni-app/base/subpackage&preload",
+							link: "subpackage&preload",
 						},
 					],
 				},
 				{
 					text: "进阶",
 					collapsed: true,
+					base: "/uni-app/advanced/",
 					items: [
 						{
 							text: "登录",
-							link: "/uni-app/advanced/login",
+							link: "login",
 						},
 					],
+				},
+			],
+			"/tools/": [
+				{
+					text: "概览",
+					link: "/tools/",
 				},
 			],
 		},
@@ -95,23 +109,5 @@ const config: UserConfig<DefaultTheme.Config> = {
 		},
 	},
 };
-
-// 生成侧边栏导航
-const additionalNavConfig: DefaultTheme.NavItem[] = [];
-const sidebarConfig = config.themeConfig!.sidebar;
-for (const key in sidebarConfig) {
-	const sidebarItem = sidebarConfig[key];
-	const text = key;
-	const firstItem = sidebarItem[0];
-	const config = { link: "" };
-	if (firstItem.items) {
-		config.link = firstItem.items[0].link;
-	} else {
-		config.link = firstItem.link;
-	}
-	additionalNavConfig.push({ text, link: config.link });
-}
-
-config.themeConfig!.nav!.push(...additionalNavConfig);
 
 export default defineConfig(config);
