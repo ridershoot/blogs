@@ -32,6 +32,10 @@
   - 终端美化
   - 功能拓展
 
+### markdown 编辑器
+
+- [Typora](https://typoraio.cn/) <Badge type='warning' text='pay' />
+
 ## 其他
 
 ### 远程
@@ -41,3 +45,21 @@
 ### 电脑&手机文件传输
 
 - [HandShaker](https://www.smartisan.com/apps/#/handshaker)
+
+### 截屏
+
+- [Snipaste](https://zh.snipaste.com/)
+
+### mac 便利工具 <Badge type='warning' text='mac' />
+
+- [OpeninTerminal](https://github.com/Ji4n1ng/OpenInTerminal)
+  - 一键打开 vscode ， iTerm 等
+- [Mos](https://mos.caldis.me/)
+  - 管理 macos 鼠标
+- [PlayCover](https://playcover.io/)
+  - Mac 上游玩游戏
+- [Bob](https://bobtranslate.com/guide/) <Badge type='warning' text='pay' />
+  - 翻译工具
+  - OCR
+- [AppCleaner](https://freemacsoft.net/appcleaner/)
+  - 卸载App时清除残留文件

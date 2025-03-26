@@ -86,6 +86,8 @@ const register = async () => {
 }
 ```
 
+## 源数据覆盖法
+
 那么是否有一种既优雅又能应对多样的数据的重置方法呢？有的，当然有的，这种方法的实现思路就是**拿原始数据覆盖变量**，直接看代码：
 
 ```ts
@@ -139,7 +141,7 @@ const register = async () => {
 
 :::
 
-:::danger
+:::details 拓展
 
 **获取原始数据必须通过方法，而不是直接访问原始数据对象。**
 
@@ -174,10 +176,16 @@ const register = async () => {
 
 要排查这个问题，你可以用 `watch` 监听 `form` ，也可以直接在 `resetForm` 里面输出 `form.value` 和 `originForm` 进行对比，但是无论哪种方法最后都会指向一个结论： `form` 没有被改变。 `watch` 监听不到由 `resetForm` 触发的改变， `form.value` 和 `originForm` 的值相等，也没有触发改变。
 
-通过对比 `form.value` 和 `originForm` 其实已经可以看出问题所在了，**`originForm`**被修改了，但从代码上看，没有显式
+通过对比 `form.value` 和 `originForm` 其实已经可以看出问题所在了，<u>`originForm` 被修改了</u>。
+
+但从代码上看，其实并没有对它显式赋值，如果不深入了解 vue 响应式原理，那是无法找到什么地方修改了原始对象，这里只说明结论：**vue 会劫持值为复杂数据类型的数据，按表现来说，就是访问 `form.value.username` 会读取 `originForm.username`，修改 `form.value.username` 会修改 `originForm.username`**
+
+因为 vue 响应式数据会对被监听的复杂数据产生影响，所以在初始化/重置的时候不能使用同一个对象，提供数据的方式最好就是直接使用一个方法来返回，避免产生以上问题
 
 :::
 
-:::info 总结
+## 总结
 
-:::
+这篇文章讲述了 vue3 里面需要重置数据的场景，并讲述了几种重置数据的方法，比如手动重置，通过 `Object.keys + forEach` 重置，通过源数据覆盖重置。
+
+其中通过源数据重置这种方法需要注意提供源数据要通过函数，不能直接提供源数据。
