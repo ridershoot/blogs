@@ -209,13 +209,13 @@ module.exports = {
 
 开启服务端口，才能在 uni-app 运行到微信开发者工具的时候调起微信开发者工具。这个配置一次就可以了
 
-![alt](../../image/WechatIMG720.jpg)
+![开启微信开发者工具的服务端口](../../image/WechatIMG720.jpg)
 
 ### 保存时自动重新编译小程序
 
 HBuilder 那边保存时会自动重新编译，微信开发者工具也需要有相应配置，要不然需要手动刷新
 
-![alt](../../image/WechatIMG721.jpg)
+![保存时自动重新编译小程序](../../image/WechatIMG721.jpg)
 
 ### 小程序预览按钮显示为灰色
 
