@@ -7,6 +7,8 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 // @ts-ignore
 import Fancyapps from "@fancyapps/ui/fancybox";
 Fancyapps.Fancybox.bind("[data-fancybox]");
+// 代码组图标的样式
+import "virtual:group-icons.css";
 
 export default {
 	extends: DefaultTheme,

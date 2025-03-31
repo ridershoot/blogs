@@ -25,7 +25,8 @@
 	"license": "MIT",
 	"type": "module",
 	"devDependencies": {
-		"vitepress": "^1.6.3"
+		"vitepress": "^1.6.3",
+		"vitepress-plugin-group-icons": "^1.3.8"
 	},
 	"dependencies": {
 		"@fancyapps/ui": "^5.0.36",

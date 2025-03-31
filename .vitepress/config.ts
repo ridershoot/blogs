@@ -1,6 +1,8 @@
 import { defineConfig } from "vitepress";
 import type { UserConfig, DefaultTheme } from "vitepress";
 import ImgWithFancyboxPlugin from "./plugins/ImgWithFancybox";
+import SideBarConfig from "./config/sidebar.json";
+import { groupIconMdPlugin, groupIconVitePlugin } from "vitepress-plugin-group-icons";
 // https://vitepress.dev/reference/site-config
 
 const currentYear = new Date().getFullYear();
@@ -23,6 +25,8 @@ const config: UserConfig<DefaultTheme.Config> = {
 		config(md) {
 			// 大图预览
 			md.use(ImgWithFancyboxPlugin);
+			// 代码组图标
+			md.use(groupIconMdPlugin);
 		},
 	},
 	// 是否显示最后更新时间
@@ -37,7 +41,16 @@ const config: UserConfig<DefaultTheme.Config> = {
 			{ text: "首页", link: "/" },
 			{ text: "vue", link: "/vue/note/vue3-reactive-data-reset" },
 			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
-			{ text: "工具", link: "/tools/" },
+			{
+				text: "其他",
+				items: [
+					{ text: "工具", link: "/others/tools" },
+					{
+						text: "git commit 规范",
+						link: "/others/git-commit-message-standard",
+					},
+				],
+			},
 		],
 		// 搜索
 		search: {
@@ -45,48 +58,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 		},
 		// 侧边栏
 		sidebar: {
-			"/vue/": [
-				{
-					text: "注意",
-					collapsed: true,
-					base: "/vue/note/",
-					items: [
-						{
-							text: "vue3 响应式数据重置",
-							link: "vue3-reactive-data-reset",
-						},
-					],
-				},
-			],
-			"/uni-app/": [
-				{
-					text: "基础",
-					base: "/uni-app/base/",
-					items: [
-						{
-							text: "分包和预加载",
-							link: "subpackage&preload",
-						},
-					],
-				},
-				{
-					text: "进阶",
-					collapsed: true,
-					base: "/uni-app/advanced/",
-					items: [
-						{
-							text: "登录",
-							link: "login",
-						},
-					],
-				},
-			],
-			"/tools/": [
-				{
-					text: "概览",
-					link: "/tools/",
-				},
-			],
+			...SideBarConfig,
 		},
 		// 文章大纲
 		outline: {
@@ -107,6 +79,10 @@ const config: UserConfig<DefaultTheme.Config> = {
 				"@fancyapps/ui/fancybox": "@fancyapps/ui/dist/index.umd.js",
 			},
 		},
+		plugins: [
+			// 代码组图标
+			groupIconVitePlugin(),
+		],
 	},
 };
 
