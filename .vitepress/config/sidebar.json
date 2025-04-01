@@ -24,6 +24,10 @@
 				{
 					"text": "分包和预加载",
 					"link": "subpackage&preload"
+				},
+				{
+					"text": "pages.json配置文件",
+					"link": "pages.json配置文件"
 				}
 			]
 		},
