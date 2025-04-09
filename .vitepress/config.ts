@@ -39,7 +39,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 		// 顶部导航
 		nav: [
 			{ text: "首页", link: "/" },
-			{ text: "vue", link: "/vue/note/vue3-reactive-data-reset" },
+			{ text: "vue", link: "/vue/base/Props" },
 			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
 			{
 				text: "其他",

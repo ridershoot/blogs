@@ -1,6 +1,16 @@
 {
 	"/vue/": [
 		{
+			"text": "基础",
+			"base": "/vue/base/",
+			"items": [
+				{
+					"text": "Props",
+					"link": "Props"
+				}
+			]
+		},
+		{
 			"text": "注意",
 			"collapsed": true,
 			"base": "/vue/note/",
