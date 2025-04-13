@@ -63,5 +63,17 @@
 				}
 			]
 		}
+	],
+	"/mysql/": [
+		{
+			"text": "基础",
+			"base": "/mysql/base/",
+			"items": [
+				{
+					"text": "数据库基本操作",
+					"link": "db-base-operate"
+				}
+			]
+		}
 	]
 }

@@ -41,6 +41,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 			{ text: "首页", link: "/" },
 			{ text: "vue", link: "/vue/base/props" },
 			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
+			{ text: "MySQL", link: "/mysql/base/db-base-operate" },
 			{
 				text: "其他",
 				items: [
@@ -49,6 +50,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 						text: "git commit 规范",
 						link: "/others/git-commit-message-standard",
 					},
+					{ text: "想要的知识", link: "/others/want" },
 				],
 			},
 		],
