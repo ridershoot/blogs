@@ -38,6 +38,10 @@
 				{
 					"text": "pages.json配置文件",
 					"link": "pages.json配置文件"
+				},
+				{
+					"text": "页面间通信",
+					"link": "page-to-page-communication"
 				}
 			]
 		},
