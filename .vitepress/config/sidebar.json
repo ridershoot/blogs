@@ -11,6 +11,16 @@
 			]
 		},
 		{
+			"text": "拓展",
+			"base": "/vue/extends/",
+			"items": [
+				{
+					"text": "Vue 中的样式穿透",
+					"link": "style-penetration"
+				}
+			]
+		},
+		{
 			"text": "注意",
 			"collapsed": true,
 			"base": "/vue/note/",
