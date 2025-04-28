@@ -4,6 +4,8 @@
 
 - `this`指向
 - `Promise` 相关知识
+- vue
+  - `<Transition>` - [文档](https://cn.vuejs.org/guide/built-ins/transition.html#transition)
 
 ## 进阶
 
@@ -14,6 +16,7 @@
   - 钩子函数
     - 请求
     - 响应
+- 模块联邦
 
 ## 拓展
 

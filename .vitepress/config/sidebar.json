@@ -22,7 +22,7 @@
 		},
 		{
 			"text": "注意",
-			"collapsed": true,
+			"collapsed": false,
 			"base": "/vue/note/",
 			"items": [
 				{

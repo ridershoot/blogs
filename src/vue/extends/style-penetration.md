@@ -1,6 +1,6 @@
 # Vue 中的样式穿透
 
-在 vue 中有一个特殊的 css 问题：无法修改组件的样式，相信开发过的 vue 项目的人都遇到过这个问题，除非你选择将所有的样式都写在全局作用域下面，但即使如此相信你也曾听闻过这个问题。
+在 vue 中有一个特殊的 css 问题：无法直接修改组件的样式，相信开发过的 vue 项目的人都遇到过这个问题，除非你选择将所有的样式都写在全局作用域下面，但即使如此相信你也曾听闻过这个问题。
 
 对于这个问题，你肯定也知道如何解决它，那就是**样式穿透**，直接看代码：
 
@@ -157,7 +157,7 @@
 
 ![SFC中没写样式的页面](../../image/WechatIMG808.jpg)
 
-可以看到即使*page-2*没有写样式，但是样式也会收到 `.no-scope` 的影响，`.no-scope` 是全局的。
+可以看到即使*page-2*没有写样式，但是样式也会受到 `.no-scope` 的影响，`.no-scope` 是全局的。
 
 :::info
 需要注意的是，如果要让 `.no-scope` 对*page-2*产生影响，需要先加载*page-1*。
@@ -227,7 +227,7 @@
 
 ![搜索属性选择器](../../image/WechatIMG813.jpg)
 
-上图即是页面中搜索 `[data-v-2e12dbd4]` 得到的结果，从中我们得到 2 个结论：
+上图即是页面中搜索 `[data-v-2e12dbd4]` 得到的结果，从中我们得到 3 个结论：
 
 1. `.has-scope` 元素身上存在 `[data-v-2e12dbd4]`，所以才能使 `.has-scope[data-v-2e12dbd4]` 生效
 2. `[data-v-2e12dbd4]` 不止存在一个
@@ -237,10 +237,153 @@
 
 但是，第 2 点结论和第 3 点结论却又让人更加迷惑，为什么会有这么多的 `[data-v-2e12dbd4]` ？为什么会存在 `data-v-72285034` ？为什么 `[data-v-2e12dbd4]` 会和 `[data-v-72285034]` 出现在同一个元素上
 
+这里直接说出结论：
+
+- vue 编译的时候会给 SFC 中的普通 DOM 元素添加一个 `[data-v-xxxxxxxx]` 属性
+- 对于组件，只会给最外层元素添加 `[data-v-xxxxxxxx]` 属性，同时组件自身也是一个 SFC ，也会在编译的时候添加一个属于自身的 `[data-v-xxxxxxxx]` 属性，这就解释了为什么一个元素身上存在 2 个 `[data-v-xxxxxxxx]` 属性
+
+:::tip 注意
+那些通过 `teleport` 将元素转移到其他地方的不会添加 `[data-v-xxxxxxxx]` 属性
+
+[teleport](https://cn.vuejs.org/guide/built-ins/teleport.html#teleport)是一个内置组件，它可以将一个组件内部的一部分模板“传送”到该组件的 DOM 结构外层的位置去。
+:::
+
 ## 终点：样式穿透
+
+前面我们已经了解如何使用样式，也明白了样式作用域的实现原理，在开始探秘样式穿透之前，不妨再回顾一下前面的知识：
+
+1. vue3 通过 `:deep(selector)` 实现样式穿透，也可以通过 `::v-deep(selector)`
+2. vue2 根据 css/scss/less 选择不同的写法实现样式穿透
+   1. css 通过 `/deep/`，`>>>`，`::v-deep` 实现
+   2. less 通过 `/deep/`，`::v-deep` 实现
+   3. scss 通过 `::v-deep` 实现
+3. 通过 `selector[data-v-xxxxxxxx]` 实现样式作用域
+
+回顾之前的知识，联想我们将要探究的样式穿透，大胆地猜想一下，样式穿透是否也是在 `selector[data-v-xxxxxxxx]` 上做文章
 
 ### 样式穿透的作用
 
+之前我们已经知道在样式作用域下，类名后面会添加一个 `[data-v-xxxxxxxx]`，就像下面代码所示
+
+```scss{1}
+.has-scope[data-v-2e12dbd4] {
+  --tw-text-opacity: 1;
+  color: rgb(255 80 76 / var(--tw-text-opacity, 1));
+}
+```
+
+在这样的样式下，*page-1*页面内拥有这个样式的元素都会被修改文字颜色，如下图所示，
+
+![在样式作用域下的样式](../../image/WechatIMG810.jpg)
+
+但这并不是样式穿透，只是添加到组件根元素的样式。为了探究样式穿透，我们将按钮文字的背景颜色改成红色：
+
+![按钮中的文字](../../image/WechatIMG816.jpg)
+
+要修改 `button` 下面的 `span` 的背景颜色，修改代码如下：
+
+```vue
+<template>
+  <n-button class="has-scope">
+    测试
+  </n-button>
+</template>
+<style scoped lang="scss">
+.has-scope {
+  & > span {
+    @apply bg-red-primary;
+  }
+}
+</style>
+```
+
+页面展示如下：
+
+![样式修改没效果](../../image/WechatIMG817.jpg)
+
+我们再看看页面上 `span` 元素是否有对应的样式：
+
+![样式没有命中span](../../image/WechatIMG818.jpg)
+
+全局查找 `.has-scope` ，得到如下代码：
+
+```css{1}
+.has-scope > span[data-v-2e12dbd4] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 80 76 / var(--tw-bg-opacity, 1));
+}
+```
+
+对以上信息整理可以得到 2 点结论：
+
+1. 样式作用域会在选择器的尾部添加上 `[data-v-xxxxxxxx]`
+2. `button` 下面的 `span` 属于 `<n-button>` 组件内的元素，没有 `[data-v-xxxxxxxx]` ，所以无法命中 `.has-scope > span[data-v-2e12dbd4]`
+
+#### 如果添加了样式穿透
+
+看过了没有添加样式穿透的代码，知道为什么无法直接修改组件中的元素样式，我们再对比下添加了样式穿透的效果。
+
+修改代码如下：
+
+```vue
+<template>
+  <n-button class="has-scope">
+    测试
+  </n-button>
+</template>
+<style scoped lang="scss">
+.has-scope {
+  & > :deep(span) {
+    @apply bg-red-primary;
+  }
+}
+</style>
+```
+
+页面效果及代码：
+
+![页面效果](../../image/WechatIMG819.jpg)
+
+![页面元素](../../image/WechatIMG820.jpg)
+
+```css{1}
+.has-scope[data-v-2e12dbd4] >  span {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 80 76 / var(--tw-bg-opacity, 1));
+}
+```
+
+可以看到添加了样式穿透之后，页面成功改动，样式也能命中目标元素了
+
+对比添加样式前后的代码，可以看到样式穿透所做的只是将 `[data-v-xxxxxxxx]` 提前一个元素，放到上一个选择器尾部。
+
+:::tip
+如果没有上一个选择器，`[data-v-xxxxxxxx]` 会充当上一个选择器
+
+```vue{2}
+<style scoped lang="scss">
+:deep(.has-scope) {
+  @apply bg-red-primary;
+}
+</style>
+```
+
+在页面上会呈现如下代码：
+
+```css{1}
+[data-v-2e12dbd4] .has-scope {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 80 76 / var(--tw-bg-opacity, 1));
+}
+```
+
+:::
+
 ### 如何才能更好地使用样式穿透
 
-## 总结
+经过上面的探究，相信大家已经掌握样式作用域及样式穿透的秘密，在修改组件内部元素的样式时不再简单粗暴地使用样式穿透，最后发现添加了样式穿透也无法成功修改。遇到这种情况，大家也可以从代码层面进行排查
+
+对于如何更好使用样式穿透，我有以下几条建议：
+
+1. 确认样式所在 SFC 的 `[data-v-xxxxxxxx]`
+2. 确认要修改元素是组件根元素还是组件内的其他元素
