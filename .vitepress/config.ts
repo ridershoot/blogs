@@ -41,6 +41,10 @@ const config: UserConfig<DefaultTheme.Config> = {
 			{ text: "首页", link: "/" },
 			{ text: "vue", link: "/vue/base/props" },
 			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
+			{
+				text: "库",
+				items: [{ text: "tailwindcss", link: "/library/tailwindcss/v3-migrate-to-v4" }],
+			},
 			{ text: "MySQL", link: "/mysql/base/db-base-operate" },
 			{
 				text: "其他",

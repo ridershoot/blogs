@@ -8,5 +8,10 @@
 			"other": "on"
 		},
 		"editor.snippetSuggestions": "top"
-	}
+	},
+	"github.copilot.enable": {
+		"*": false,
+		"markdown": false
+	},
+	"github.copilot.nextEditSuggestions.enabled": false
 }
