@@ -54,6 +54,10 @@
 			"base": "/uni-app/base/",
 			"items": [
 				{
+					"text": "uni-app API",
+					"link": "api"
+				},
+				{
 					"text": "分包和预加载",
 					"link": "subpackage&preload"
 				},

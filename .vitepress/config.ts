@@ -40,7 +40,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 		nav: [
 			{ text: "首页", link: "/" },
 			{ text: "vue", link: "/vue/base/props" },
-			{ text: "uni-app", link: "/uni-app/base/subpackage&preload" },
+			{ text: "uni-app", link: "/uni-app/base/api" },
 			{
 				text: "库",
 				items: [{ text: "tailwindcss", link: "/library/tailwindcss/v3-migrate-to-v4" }],
