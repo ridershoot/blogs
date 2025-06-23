@@ -39,6 +39,7 @@ const config: UserConfig<DefaultTheme.Config> = {
 		// 顶部导航
 		nav: [
 			{ text: "首页", link: "/" },
+			{ text: "前端", link: "/frontend/css/通过backdrop-filter实现磨砂玻璃效果" },
 			{ text: "vue", link: "/vue/base/props" },
 			{ text: "uni-app", link: "/uni-app/base/api" },
 			{
