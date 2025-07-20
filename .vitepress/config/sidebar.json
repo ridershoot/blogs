@@ -94,12 +94,16 @@
 			"base": "/uni-app/other/",
 			"items": [
 				{
-					"text": "App 预览与打包",
-					"link": "App预览&打包"
-				},
-				{
 					"text": "开发环境配置",
 					"link": "dev-env-config-guide"
+				},
+				{
+					"text": "跨端兼容",
+					"link": "跨端兼容"
+				},
+				{
+					"text": "App 预览与打包",
+					"link": "App预览&打包"
 				}
 			]
 		}
