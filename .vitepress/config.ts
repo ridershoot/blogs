@@ -44,7 +44,10 @@ const config: UserConfig<DefaultTheme.Config> = {
 			{ text: "uni-app", link: "/uni-app/base/api" },
 			{
 				text: "库",
-				items: [{ text: "tailwindcss", link: "/library/tailwindcss/v3-migrate-to-v4" }],
+				items: [
+					{ text: "tailwindcss", link: "/library/tailwindcss/v3-migrate-to-v4" },
+					{ text: "echarts", link: "/library/echarts/echarts入门指南" },
+				],
 			},
 			{ text: "MySQL", link: "/mysql/base/db-base-operate" },
 			{
