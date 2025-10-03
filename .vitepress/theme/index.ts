@@ -9,6 +9,7 @@ import Fancyapps from "@fancyapps/ui/fancybox";
 Fancyapps.Fancybox.bind("[data-fancybox]");
 // 代码组图标的样式
 import "virtual:group-icons.css";
+import AppImage from "./components/App/AppImage.vue";
 
 export default {
 	extends: DefaultTheme,
@@ -17,5 +18,7 @@ export default {
 			// https://vitepress.dev/guide/extending-default-theme#layout-slots
 		});
 	},
-	enhanceApp({ app, router, siteData }) {},
+	enhanceApp({ app, router, siteData }) {
+		app.component("AppImage", AppImage);
+	},
 } satisfies Theme;

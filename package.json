@@ -25,6 +25,7 @@
 	"license": "MIT",
 	"type": "module",
 	"devDependencies": {
+		"sass-embedded": "^1.93.2",
 		"vitepress": "^1.6.3",
 		"vitepress-plugin-group-icons": "^1.3.8"
 	},
