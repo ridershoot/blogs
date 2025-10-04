@@ -366,9 +366,370 @@ const option = {
 
 从可操作性上来说，`视觉映射>直接样式设置>主题=调色盘` 。视觉映射最灵活，可操作性最强，直接样式设置次之，主题和调色盘最弱。
 
-实际开发过程中，优先使用视觉映射；主题只在需要全局调整颜色的时候使用，同时 `Echarts` 自身也有主题，一般不需要自己去定义主题，除非设计有成系列的设计；调色盘也是相同道理；至于直接样式设置，因为需要将配置写到每一个系列当中，可维护度不高，同时灵活性不如视觉映射，一般不怎么用。
+实际开发过程中，应该根据需求决定使用什么技术，视觉映射和直接样式设置使用的比较多；主题只在需要全局调整颜色的时候使用，同时 `Echarts` 自身也有主题，一般不需要自己去定义主题，除非设计有成系列的设计；调色盘也是相同道理。
 
 ## 四、数据集（Dataset）
+
+数据集是一种不同于直接在系列中维护数据的方式，数据集将数据从不常变化的配置中抽离出来，以此提高配置的可维护性。
+
+也许初学者认为有了 `series.data` 就不需要 `dataset` 了，但请相信我，学会使用 `dataset` 后，你会发现再也离不开它。
+
+### 1. 为什么要使用数据集而不是直接在系列中维护数据？<Badge type='tip' text='重要' />
+
+前面已经说过了，使用 `dataset` 比使用 `series.data` 可维护性高。实际开发过程中总离不开异步请求数据，然后再更新图表数据，将数据从配置中抽离出来，更新时也只更新数据而不更新配置，此时使用 `dataset` 就能很好地满足需求。
+
+多说无益，直接看代码吧。
+
+下面是直接在系列中维护数据的代码：
+
+```js
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {
+    data: ["销量", "利润", "成本"],
+  },
+  xAxis: {
+    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+  },
+  yAxis: {},
+  series: [
+    {
+      name: "销量",
+      type: "bar",
+      data: [5, 20, 36, 10, 10, 20],
+    },
+    {
+      name: "利润",
+      type: "bar",
+      data: [10, 20, 30, 40, 50, 60],
+    },
+    {
+      name: "成本",
+      type: "bar",
+      data: [10, 20, 30, 40, 50, 60],
+    },
+  ],
+};
+```
+
+下面是使用数据集的代码：
+
+```js
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {
+    data: ["销量", "利润", "成本"], // [!code --]
+  },
+  xAxis: {
+    type: "category",
+    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"], // [!code --]
+  },
+  yAxis: {},
+  series: [
+    {
+      type: "bar",
+      name: "销量", // [!code --]
+      data: [5, 20, 36, 10, 10, 20], // [!code --]
+    },
+    {
+      type: "bar",
+      name: "利润", // [!code --]
+      data: [10, 20, 30, 40, 50, 60], // [!code --]
+    },
+    {
+      type: "bar",
+      name: "成本", // [!code --]
+      data: [10, 20, 30, 40, 50, 60], // [!code --]
+    },
+  ],
+  dataset: { // [!code ++]
+    source: [ // [!code ++]
+      ["产品", "销量", "利润", "成本"], // [!code ++]
+      ["衬衫", 5, 10, 10], // [!code ++]
+      ["羊毛衫", 20, 20, 20], // [!code ++]
+      ["雪纺衫", 36, 30, 30], // [!code ++]
+      ["裤子", 10, 40, 40], // [!code ++]
+      ["高跟鞋", 10, 50, 50], // [!code ++]
+      ["袜子", 20, 60, 60], // [!code ++]
+    ], // [!code ++]
+  }, // [!code ++]
+};
+```
+
+对比下来可以看到不仅仅是 `series.data` 中的数据被抽离出来，连 `xAxis.data` 和 `legend.data` 中的数据也被抽离出来，将原本写死并且分散的数据都集中到数据集里面，当需要更新数据时，只需要更新数据集里面的数据，而不需要更新配置，这就是 `dataset` 的妙用。
+
+### 2. 维度（dimension）<Badge type='tip' text='重要' />
+
+> 当我们把系列（series）对应到“列”的时候，那么每一列就称为一个“维度（dimension）”，而每一行称为数据项（item）。反之，如果我们把系列（series）对应到表行，那么每一行就是“维度（dimension）”，每一列就是数据项（item）。
+
+根据[官方文档](https://echarts.apache.org/handbook/zh/concepts/dataset#%E7%BB%B4%E5%BA%A6%EF%BC%88dimension%EF%BC%89)表示，**维度其实就是系列，维度就是需要比较的内容**。
+
+就拿上面的 `dataset` 来说，
+
+```json
+[
+  ["产品", "销量", "利润", "成本"],
+  ["衬衫", 5, 10, 10],
+  ["羊毛衫", 20, 20, 20],
+  ["雪纺衫", 36, 30, 30],
+  ["裤子", 10, 40, 40],
+  ["高跟鞋", 10, 50, 50],
+  ["袜子", 20, 60, 60],
+]
+```
+
+维度可以是 **销量**、**利润**、**成本**，我可以从这 3 个方面比较不同产品在不同维度上的表现；也可以从**衬衫**、**羊毛衫**、**雪纺衫**、**裤子**、**高跟鞋**、**袜子**这 6 个方面比较同一产品在不同维度上的表现。
+
+如何控制数据集到图表的映射是我们接下来要学习的 2 个知识点：`seriesLayoutBy` 和 `encode`，前者简单控制使用列还是行作为维度，后者灵活控制数据集到系列中的映射，涉及到 x 轴、y 轴、tooltip、系列名等等。
+
+### 3. seriesLayoutBy
+
+默认情况下，`seriesLayoutBy` 值为 `column` ，即使用列作为维度。就拿上面的数据来说，就是拿**销量**、**利润**、**成本**这 3 个列作为维度，所以需要 3 个系列，最终效果如下图所示：
+
+<AppImage src="../../image/20251004112213.png" alt="echarts - seriesLayoutBy column" />
+
+当然也可以将 `seriesLayoutBy` 值为 `row` ，即使用行作为维度。
+
+```js
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  dataset: {
+    source: [
+      ["产品", "销量", "利润", "成本"],
+      ["衬衫", 5, 10, 10],
+      ["羊毛衫", 20, 20, 20],
+      ["雪纺衫", 36, 30, 30],
+      ["裤子", 10, 40, 40],
+      ["高跟鞋", 10, 50, 50],
+      ["袜子", 20, 60, 60],
+    ],
+  },
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      type: "bar",
+      seriesLayoutBy: "row", // [!code ++]
+    },
+    {
+      type: "bar",
+      seriesLayoutBy: "row", // [!code ++]
+    },
+    {
+      type: "bar",
+      seriesLayoutBy: "row", // [!code ++]
+    },
+    { // [!code ++]
+      type: "bar", // [!code ++]
+      seriesLayoutBy: "row", // [!code ++]
+    }, // [!code ++]
+    { // [!code ++]
+      type: "bar", // [!code ++]
+      seriesLayoutBy: "row", // [!code ++]
+    }, // [!code ++]
+  ],
+};
+```
+
+同样拿上面的数据来说，就是拿**衬衫**、**羊毛衫**、**雪纺衫**、**裤子**、**高跟鞋**、**袜子**这 6 行作为维度，需要 6 个系列，最终效果如下图所示：
+
+<AppImage src="../../image/20251004112430.png" alt="echarts - seriesLayoutBy row" />
+
+### 4. 映射（encode）<Badge type='tip' text='重要' />
+
+通过 `series.encode` 可以指定使用 `dataset` 里面的哪个维度的数据来渲染图表里面的内容，比如系列名称（seriesName）、x 轴（x）、y 轴（y）、tooltip 等。
+
+```js{14-20,24-30}
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      type: "bar",
+      encode: {
+        x: 0, // 指定了使用第 0 个维度作为 x 轴的值
+        y: 2, // 指定了使用第 2 个维度作为 y 轴的值，第 2 维度为成本维度，所以这里会根据不同产品的成本渲染柱状图的高度
+        seriesName: 2, // 图例（Legend）的名称以及 tooltip 里面的系列名称
+        itemName: 0, // tooltip 里面的数据项名称
+        tooltip: 2, // tooltip 里面的数据值
+      },
+    },
+    {
+      type: "bar",
+      encode: {
+        x: 0,
+        y: 1,
+        seriesName: 1,
+        itemName: 0,
+        tooltip: 1,
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["产品", "销量", "成本"],
+        ["衬衫", 5, 10],
+        ["羊毛衫", 20, 20],
+        ["雪纺衫", 36, 30],
+        ["裤子", 10, 40],
+        ["高跟鞋", 10, 50],
+        ["袜子", 20, 60],
+      ],
+    },
+  ],
+};
+```
+
+<AppImage src="../../image/20251004153410.png" alt="echarts - encode" />
+
+上面的代码中，通过 `encode` 指定使用 `dataset` 里面的哪个维度的数据来渲染图表里面的内容。
+
+除了上面列出来的 `encode` 属性，还有一些只能在指定图表中的 `encode` 属性，具体请看 [这里](https://echarts.apache.org/handbook/zh/concepts/dataset#%E6%95%B0%E6%8D%AE%E5%88%B0%E5%9B%BE%E5%BD%A2%E7%9A%84%E6%98%A0%E5%B0%84%EF%BC%88series.encode%EF%BC%89)。
+
+### 5. 多数据集时要如何在不同数据集中使用指定数据集？<Badge type='tip' text='重要' />
+
+通过 `series.datasetIndex` 指定使用哪个数据集。
+
+```js
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      type: "bar",
+    },
+    {
+      type: "bar",
+      datasetIndex: 1, // [!code focus]
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["产品", "销量"],
+        ["衬衫", 5],
+        ["羊毛衫", 20],
+        ["雪纺衫", 36],
+        ["裤子", 10],
+        ["高跟鞋", 10],
+        ["袜子", 20],
+      ],
+    },
+    {
+      source: [
+        ["产品", "成本"],
+        ["衬衫", 10],
+        ["羊毛衫", 20],
+        ["雪纺衫", 30],
+        ["裤子", 40],
+        ["高跟鞋", 50],
+        ["袜子", 60],
+      ],
+    },
+  ],
+};
+```
+
+### 6. 不同的数据集格式<Badge type='info' text='拓展' />
+
+除了二维数组格式，`Echarts` 还支持对象格式。
+
+```js{36-41,25-29}
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      type: "bar",
+      encode: {
+        x: "product",
+        y: "sales",
+        seriesName: "sales",
+        itemName: "product",
+        tooltip: "sales",
+      },
+    },
+    {
+      type: "bar",
+      encode: {
+        x: "product",
+        y: "cost",
+        seriesName: "cost",
+        itemName: "product",
+        tooltip: "cost",
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        { product: "shirt", sales: 5, cost: 10 },
+        { product: "sweater", sales: 20, cost: 20 },
+        { product: "chiffon", sales: 36, cost: 30 },
+        { product: "pants", sales: 10, cost: 40 },
+        { product: "heels", sales: 10, cost: 50 },
+        { product: "socks", sales: 20, cost: 60 },
+      ],
+    },
+  ],
+};
+```
+
+使用对象格式数据集有以下几点需要注意：
+
+1. 需要注意的是，如果使用对象格式，`series.encode` 里面的属性值不能使用维度下标，只能使用维度名称。
+2. 对象格式不支持 `series.seriesLayoutBy` 属性。
+
+### 7. 数据集不支持所有图表类型
+
+`dataset` 并不支持所有图表类型，支持 `dataset` 的图表有：
+
+- line
+- bar
+- pie
+- scatter
+- effectScatter
+- parallel
+- candlestick
+- map
+- funnel
+- custom
+
+更多内容请看 [这里](https://echarts.apache.org/handbook/zh/concepts/dataset#%E5%85%B6%E4%BB%96)
 
 ## 五、数据转换（Transform）
 
