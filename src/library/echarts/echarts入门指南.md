@@ -733,6 +733,296 @@ const option = {
 
 ## 五、数据转换（Transform）
 
+数据转换必须配合数据集使用，数据转换简单理解就和 `Array.prototype.map`、`Array.prototype.filter`、`Array.prototype.sort` 作用一样，
+对已有数据处理然后得到新的数据。
+
+### 1. filter
+
+`filter` 就是过滤，针对某一个或多个维度的数据进行数值比较，然后过滤出符合要求的数据。
+
+```js{36-62}
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      datasetIndex: 1,
+      type: "bar",
+      encode: {
+        x: 0,
+        y: 1,
+        seriesName: 1,
+        itemName: 0,
+        tooltip: 1,
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["product", "sales", "cost"],
+        ["shirt", 5, 10],
+        ["sweater", 20, 20],
+        ["chiffon", 36, 30],
+        ["pants", 10, 40],
+        ["heels", 10, 50],
+        ["socks", 20, 60],
+      ],
+    },
+    {
+      fromDatasetIndex: 0, // 设置从哪个数据集获取数据，如果不设置 fromDatasetIndex 或 fromDatasetId，默认从第1个数据集获取数据，建议始终设置
+      transform: {
+        type: "filter",
+        config: {
+          or: [
+            {
+              dimension: 2,
+              "=": 60,
+            },
+            {
+              and: [
+                {
+                  dimension: 1,
+                  ">=": 10,
+                },
+                {
+                  dimension: 2,
+                  "<=": 40,
+                },
+              ],
+            },
+          ],
+        },
+        print: true, // 在浏览器控制台中输出数据转换结果，方便调试
+      },
+    },
+  ],
+};
+```
+
+<AppImage src="../../image/20251005110331.png" alt="echarts - transform - filter" />
+
+:::details 知识点讲解
+
+上面的配置其实很好理解，`or` 表示或，`and` 表示并且，`dimension` 表示要以哪个维度的数据进行比较，剩下的其实就是一些比较符号。
+
+整体下来的过滤逻辑是从第1个数据集中获取数据，过滤出以下数据：
+
+- 第2维度（cost）中数值为60的数据
+- 第1维度（sales）中数值大于等于10并且第2维度（cost）中数值小于等于40的数据
+
+配置 `print` 输出结果如下：
+
+<AppImage src="../../image/20251005111910.png" alt="echarts - transform - filter - print" />
+
+符合过滤逻辑。
+
+:::
+
+:::details filter 的参数类型
+
+```ts
+type FilterTransform = {
+  type: 'filter';
+  config: ConditionalExpressionOption;
+};
+type ConditionalExpressionOption =
+  | true
+  | false
+  | RelationalExpressionOption
+  | LogicalExpressionOption;
+type RelationalExpressionOption = {
+  dimension: DimensionName | DimensionIndex;
+  parser?: 'time' | 'trim' | 'number';
+  lt?: DataValue; // less than
+  lte?: DataValue; // less than or equal
+  gt?: DataValue; // greater than
+  gte?: DataValue; // greater than or equal
+  eq?: DataValue; // equal
+  ne?: DataValue; // not equal
+  '<'?: DataValue; // lt
+  '<='?: DataValue; // lte
+  '>'?: DataValue; // gt
+  '>='?: DataValue; // gte
+  '='?: DataValue; // eq
+  '!='?: DataValue; // ne
+  '<>'?: DataValue; // ne (SQL style)
+  reg?: RegExp | string; // RegExp
+};
+type LogicalExpressionOption = {
+  and?: ConditionalExpressionOption[];
+  or?: ConditionalExpressionOption[];
+  not?: ConditionalExpressionOption;
+};
+type DataValue = string | number | Date;
+type DimensionName = string;
+type DimensionIndex = number;
+```
+
+:::
+
+### 2. sort
+
+`sort` 就是对已有数据进行排序。
+
+```js{36-46}
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      datasetIndex: 1,
+      type: "bar",
+      encode: {
+        x: 0,
+        y: 1,
+        seriesName: 1,
+        itemName: 0,
+        tooltip: 1,
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["product", "sales", "cost"],
+        ["shirt", 5, 10],
+        ["sweater", 20, 20],
+        ["chiffon", 36, 30],
+        ["pants", 10, 40],
+        ["heels", 10, 50],
+        ["socks", 20, 60],
+      ],
+    },
+    {
+      fromDatasetIndex: 0,
+      transform: {
+        type: "sort",
+        config: {
+          dimension: 1,
+          order: "asc",
+        },
+        print: true,
+      },
+    },
+  ],
+};
+```
+
+<AppImage src="../../image/20251005155619.png" alt="echarts - transform - sort" />
+
+:::details sort 的参数类型
+
+```ts
+type SortTransform = {
+  type: 'sort';
+  config: OrderExpression | OrderExpression[];
+};
+type OrderExpression = {
+  dimension: DimensionName | DimensionIndex;
+  order: 'asc' | 'desc';
+  incomparable?: 'min' | 'max';
+  parser?: 'time' | 'trim' | 'number';
+};
+type DimensionName = string;
+type DimensionIndex = number;
+```
+
+:::
+
+### 3. 更多数据转换器
+
+常用的数据转换器就是 `filter`、`sort`，更多请看 [这里](https://echarts.apache.org/handbook/zh/concepts/data-transform#%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E5%99%A8)。
+
+### 4. 数据转换进阶使用<Badge type='info' text='拓展' />
+
+（1） transform 链式调用
+
+```js{38-55}
+const option = {
+  title: {
+    text: "ECharts 入门示例",
+  },
+  tooltip: {},
+  legend: {},
+  xAxis: {
+    type: "category",
+  },
+  yAxis: {},
+  series: [
+    {
+      datasetIndex: 1,
+      type: "bar",
+      encode: {
+        x: 0,
+        y: 1,
+        seriesName: 1,
+        itemName: 0,
+        tooltip: 1,
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["product", "sales", "cost"],
+        ["shirt", 5, 10],
+        ["sweater", 20, 20],
+        ["chiffon", 36, 30],
+        ["pants", 10, 40],
+        ["heels", 10, 50],
+        ["socks", 20, 60],
+      ],
+    },
+    {
+      fromDatasetIndex: 0,
+      transform: [
+        {
+          type: "filter",
+          config: {
+            dimension: 1,
+            ">=": 10,
+          },
+          print: true,
+        },
+        {
+          type: "sort",
+          config: {
+            dimension: 1,
+            order: "asc",
+          },
+          print: true,
+        },
+      ],
+    },
+  ],
+};
+```
+
+（2） 指定获取 transform 输出结果
+
+> 在大多数场景下，transform 只需输出一个 data 。但是也有一些场景，需要输出多个 data ，每个 data 可以被不同的 series 或者 dataset 所使用。
+>
+>例如，在内置的 "boxplot" transform 中，除了 boxplot 系列所需要的 data 外，离群点（ outlier ）也会被生成，并且可以用例如散点图系列显示出来。
+>
+> 我们提供配置 `dataset.fromTransformResult` 来满足这种情况
+
+更多请看 [这里](https://echarts.apache.org/handbook/zh/concepts/data-transform#%E6%95%B0%E6%8D%AE%E8%BD%AC%E6%8D%A2%E7%9A%84%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8)
+
 ## 六、坐标轴
 
 ## 七、视觉映射（VisualMap）
