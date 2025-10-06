@@ -1025,6 +1025,191 @@ const option = {
 
 ## 六、坐标轴
 
+坐标轴包含 grid、x 轴、y 轴，主要包含以下内容：
+
+- grid
+- 轴线（axisLine）
+- 轴线标题（name）
+- 刻度（axisTick）
+- 刻度标签（axisLabel）
+
+<AppImage src="../../image/20251006164913.png" alt="echarts - axis" />
+
+更多的内容应该结合 [grid](https://echarts.apache.org/zh/option.html#grid)、[xAxis](https://echarts.apache.org/zh/option.html#xAxis)、[yAxis](https://echarts.apache.org/zh/option.html#yAxis) 等官方文档一起学习。
+
+### 1. 我应该如何更改轴的类型？
+
+通过 `xAxis.type` 设置轴的类型，轴的类型有如下几种：
+
+- `category`
+  - 类目轴
+- `value`
+  - 数值轴
+- `time`
+  - 时间轴
+  <AppImage src="../../image/20251006172847.png" alt="echarts - axis - time" />
+- `log`
+  - 对数轴
+  <AppImage src="../../image/20251006173353.png" alt="echarts - axis - log" />
+
+### 2. 怎么调整轴的刻度？
+
+调整刻度划分：
+
+- [splitNumber](https://echarts.apache.org/zh/option.html#xAxis.splitNumber)
+- [interval](https://echarts.apache.org/zh/option.html#xAxis.interval)
+- [minInterval](https://echarts.apache.org/zh/option.html#xAxis.minInterval)
+- [maxInterval](https://echarts.apache.org/zh/option.html#xAxis.maxInterval)
+
+刻度划分要注意轴线类型。
+
+调整刻度最大值、最小值：
+
+- [min](https://echarts.apache.org/zh/option.html#xAxis.min)
+- [max](https://echarts.apache.org/zh/option.html#xAxis.max)
+
+### 3. 怎么在一个图表示例里面声明多个 grid 和多个轴？
+
+- grid 位置和大小
+  - [left](https://echarts.apache.org/zh/option.html#grid.left)
+  - [right](https://echarts.apache.org/zh/option.html#grid.right)
+  - [top](https://echarts.apache.org/zh/option.html#grid.top)
+  - [bottom](https://echarts.apache.org/zh/option.html#grid.bottom)
+  - [width](https://echarts.apache.org/zh/option.html#grid.width)
+  - [height](https://echarts.apache.org/zh/option.html#grid.height)
+- [gridIndex](https://echarts.apache.org/zh/option.html#xAxis.gridIndex)
+  - 配置指向哪个 grid
+- [position](https://echarts.apache.org/zh/option.html#xAxis.position)
+  - 配置位置
+- [xAxisIndex](https://echarts.apache.org/zh/option.html#series-bar.xAxisIndex)
+- [yAxisIndex](https://echarts.apache.org/zh/option.html#series-bar.yAxisIndex)
+
+```js{16-27,31,40,50,62,90-91}
+const option = {
+  color: colors,
+  title: [
+    {
+      text: "多坐标轴",
+    },
+  ],
+  label: {},
+  tooltip: {
+    trigger: "axis",
+    axisPointer: {
+      type: "cross",
+    },
+  },
+  legend: {},
+  grid: [
+    {
+      top: "15%",
+      width: "40%",
+      height: "35%",
+    },
+    {
+      bottom: "15%",
+      width: "40%",
+      height: "35%",
+    },
+  ],
+  xAxis: [
+    {
+      type: "category",
+      gridIndex: 0,
+      boundaryGap: true,
+      axisTick: {
+        show: false,
+        alignWithLabel: true,
+      },
+    },
+    {
+      type: "category",
+      gridIndex: 1,
+      boundaryGap: true,
+      axisTick: {
+        show: false,
+        alignWithLabel: true,
+      },
+    },
+  ],
+  yAxis: [
+    {
+      gridIndex: 0,
+      type: "value",
+      name: "温度",
+      startValue: 0,
+      interval: 5,
+      min: 0,
+      max: 25,
+      axisLabel: {
+        formatter: "{value} ℃",
+      },
+    },
+    {
+      gridIndex: 1,
+      type: "value",
+      name: "降水量",
+      startValue: 0,
+      interval: 50,
+      min: 0,
+      max: 250,
+      axisLabel: {
+        formatter: "{value} ml",
+      },
+    },
+  ],
+  series: [
+    {
+      type: "line",
+      datasetIndex: 0,
+      name: "温度",
+      symbolSize: 7,
+      smooth: true,
+      encode: {
+        x: 0,
+        y: 2,
+      },
+    },
+    {
+      type: "bar",
+      datasetIndex: 0,
+      name: "降水量",
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      encode: {
+        x: 0,
+        y: 1,
+      },
+    },
+  ],
+  dataset: [
+    {
+      source: [
+        ["month", "precipitation", "temperature"],
+        ["1月", "6", "6.0"],
+        ["2月", "32", "10.2"],
+        ["3月", "70", "10.3"],
+        ["4月", "86", "11.5"],
+        ["5月", "68.7", "10.3"],
+        ["6月", "100.7", "13.2"],
+        ["7月", "125.6", "14.3"],
+        ["8月", "112.2", "16.4"],
+        ["9月", "78.7", "18.0"],
+        ["10月", "48.8", "16.5"],
+        ["11月", "36.0", "12.0"],
+        ["12月", "19.3", "5.2"],
+      ],
+    },
+  ],
+};
+```
+
+<AppImage src="../../image/20251006175728.png" alt="echarts - axis - grids" />
+
+### 4. 怎么让刻度和刻度标签对齐？
+
+通过 [xAxis.axisTick.alignWithLabel](https://echarts.apache.org/zh/option.html#xAxis.axisTick.alignWithLabel) 实现。
+
 ## 七、视觉映射（VisualMap）
 
 ## 八、图例（Legend）
